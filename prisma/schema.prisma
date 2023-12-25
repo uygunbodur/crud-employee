@@ -1,0 +1,36 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model department {
+  id                  Int                   @id @default(autoincrement()) @db.SmallInt
+  department_name     String                @db.VarChar(30)
+  employee_department employee_department[]
+}
+
+model employee {
+  ssn                 String                @id @db.VarChar(11)
+  first_name          String                @db.VarChar(60)
+  last_name           String                @db.VarChar(90)
+  sex                 String                @db.VarChar(1)
+  address             String                @db.VarChar(500)
+  birth_date          DateTime              @db.Date
+  record_date         DateTime?             @default(now()) @db.Timestamp(6)
+  employee_department employee_department[]
+}
+
+model employee_department {
+  id            Int         @id @default(autoincrement()) @db.SmallInt
+  employee_id   String?     @db.VarChar(11)
+  department_id Int?
+  start_date    DateTime    @db.Date
+  end_end       DateTime?   @db.Date
+  is_current    Boolean?    @default(true)
+  department    department? @relation(fields: [department_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  employee      employee?   @relation(fields: [employee_id], references: [ssn], onDelete: NoAction, onUpdate: NoAction)
+}
