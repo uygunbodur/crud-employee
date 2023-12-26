@@ -9,7 +9,6 @@ async function bootstrap() {
     .setTitle('Employee Project')
     .setDescription('Nur Sultan')
     .setVersion('1.0')
-    .addTag('employee')
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('docs', app, document);
